@@ -5,3 +5,6 @@ class Player:
         self.hand = []
         self.faceup = []
         self.facedown = []
+
+    def addToHand(self, cards):
+        self.hand.extend(cards)

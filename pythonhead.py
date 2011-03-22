@@ -40,7 +40,13 @@ for i in range(numPlayers):
     player = Player(playerName)
     players.append(player)
 
+players[0].addToHand([deck[0]])
+
+
 for player in players:
     print player.name
+    print player.hand
+    print player.faceup
+    print player.facedown
 
 
