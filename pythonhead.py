@@ -1,10 +1,12 @@
+from random import shuffle
+
 def createBigEnoughDeck(numPlayers, numCards):
     cardsNeeded = players * numCardsEach * 3
     while len(deck) < cardsNeeded:
         deck.extend(deck)
 
-suits = ["hearts", "spades", "diamonds", "clubs"]
-ranks = ["two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "jack", "queen", "king", "ace"]
+suits = ["HEARTS", "SPADES", "DIAMONDS", "CLUBS"]
+ranks = ["TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING", "ACE"]
 
 deck = [(x,y) for y in suits for x in ranks]
 
@@ -21,8 +23,9 @@ print "Players =", players
 print "Cards each =", numCardsEach
 print
 
-
 createBigEnoughDeck(players, numCardsEach)
+shuffle(deck)
+
 
 print deck
 
