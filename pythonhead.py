@@ -1,30 +1,14 @@
 from random import shuffle
 from player import Player
+from console import clearScreen, showGame
 
 def createBigEnoughDeck(numps, numcs):
     cardsNeeded = numps * numcs * 3
     while len(deck) < cardsNeeded:
         deck.extend(deck)
 
-def clearScreen():
-    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-
-
 def charToBool(c):
     return c.upper() == 'Y'
-
-def showGame():
-    print pile
-    print len(burnt), "burnt"
-    print len(deck), "left on deck"
-
-    for player in players:
-        print player.name
-        print "Hand", player.hand
-        print "Face up", player.faceup
-        print "Face down", player.facedown
 
 suits = ["HEARTS", "SPADES", "DIAMONDS", "CLUBS"]
 ranks = ["TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING", "ACE"]
@@ -57,7 +41,7 @@ for i in range(numPlayers):
     players.append(player)
 
 clearScreen()
-showGame()
+showGame(pile, burnt, deck, players)
 
 raw_input("Press enter")
 
@@ -82,5 +66,5 @@ for player in players:
         player.swap(hCard-1, fCard-1)
 
 clearScreen()
-showGame()
+showGame(pile, burnt, deck, players)
 
