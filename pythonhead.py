@@ -15,6 +15,13 @@ def clearScreen():
 def charToBool(c):
     return c.upper() == 'Y'
 
+def showPlayers():
+    for player in players:
+        print player.name
+        print player.hand
+        print player.faceup
+        print player.facedown
+
 suits = ["HEARTS", "SPADES", "DIAMONDS", "CLUBS"]
 ranks = ["TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING", "ACE"]
 
@@ -52,11 +59,7 @@ for i in range(numPlayers):
 
     players.append(player)
 
-for player in players:
-    print player.name
-    print player.hand
-    print player.faceup
-    print player.facedown
+    showPlayers()
 
 print "Dealt cards"
 print "Cards remaining: ", len(deck)
@@ -85,7 +88,13 @@ for player in players:
 
         hCard = int(raw_input("Which card from your hand do you wish to swap? "))
     
-        fCard = int(raw_input("Which card from your hand do you wish to swap? "))
-       
+        fCard = int(raw_input("Which card from your face up pile do you wish to swap? "))
+
+        player.swap(hCard-1, fCard-1)
+
+
+
     raw_input()
+
+showPlayers()
 

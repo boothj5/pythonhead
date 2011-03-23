@@ -8,3 +8,10 @@ class Player:
 
     def addToHand(self, cards):
         self.hand.extend(cards)
+
+    def swap(self, hCard, fCard):
+        handCard = self.hand.pop(hCard)
+        faceCard = self.faceup.pop(fCard)
+        self.hand.append(faceCard)
+        self.faceup.append(handCard)
+
