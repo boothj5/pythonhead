@@ -15,12 +15,16 @@ def clearScreen():
 def charToBool(c):
     return c.upper() == 'Y'
 
-def showPlayers():
+def showGame():
+    print pile
+    print len(burnt), "burnt"
+    print len(deck), "left on deck"
+
     for player in players:
         print player.name
-        print player.hand
-        print player.faceup
-        print player.facedown
+        print "Hand", player.hand
+        print "Face up", player.faceup
+        print "Face down", player.facedown
 
 suits = ["HEARTS", "SPADES", "DIAMONDS", "CLUBS"]
 ranks = ["TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING", "ACE"]
@@ -30,23 +34,16 @@ pile = []
 burnt = []
 players = []
 
+clearScreen()
 
-print "Deck size =", len(deck)
+print "Welcome to Pythonhead!"
+print
 
 numPlayers = int(raw_input("Enter number of players: "))
 numCardsEach = int(raw_input("Enter number of cards each: "))
 
-print 
-print "Players =", numPlayers
-print "Cards each =", numCardsEach
-print
-
 createBigEnoughDeck(numPlayers, numCardsEach)
 shuffle(deck)
-
-print deck
-print
-print len(deck)
 
 for i in range(numPlayers):
     playerName = raw_input("Enter name of player " + str(i+1) +  ": ")
@@ -59,21 +56,16 @@ for i in range(numPlayers):
 
     players.append(player)
 
-    showPlayers()
-
-print "Dealt cards"
-print "Cards remaining: ", len(deck)
+clearScreen()
+showGame()
 
 raw_input("Press enter")
 
 for player in players:
     clearScreen()
-    print "HAND:"
-    print player.hand
-    print "FACEUP:"
-    print player.faceup
+    print "HAND:", player.hand
+    print "FACEUP:", player.faceup
     print
-
     swap = charToBool(raw_input(player.name + " do you want to swap cards?"))
 
     if swap:
@@ -85,16 +77,10 @@ for player in players:
         print "FACEUP:"
         print player.faceup
         print
-
         hCard = int(raw_input("Which card from your hand do you wish to swap? "))
-    
         fCard = int(raw_input("Which card from your face up pile do you wish to swap? "))
-
         player.swap(hCard-1, fCard-1)
 
-
-
-    raw_input()
-
-showPlayers()
+clearScreen()
+showGame()
 
