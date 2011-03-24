@@ -1,6 +1,8 @@
 from random import shuffle
 from player import Player
 from console import clearScreen, showGame
+from card import Card
+
 
 def createBigEnoughDeck(numps, numcs):
     cardsNeeded = numps * numcs * 3
@@ -17,8 +19,18 @@ deck = [(x,y) for y in suits for x in ranks]
 pile = []
 burnt = []
 players = []
+turn = 0
 
 clearScreen()
+
+card1 = Card(2,3)
+card2 = Card(2,0)
+
+print card1
+print card2
+
+print card1.__cmp__(card2)
+
 
 print "Welcome to Pythonhead!"
 print
@@ -67,4 +79,5 @@ for player in players:
 
 clearScreen()
 showGame(pile, burnt, deck, players)
+
 
