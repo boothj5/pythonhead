@@ -29,7 +29,7 @@ card2 = Card(2,0)
 print card1
 print card2
 
-print card1.__cmp__(card2)
+print card1 != card2
 
 
 print "Welcome to Pythonhead!"
