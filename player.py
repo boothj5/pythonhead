@@ -9,12 +9,9 @@ class Player:
         self.faceup = Hand('Face up')
         self.facedown = Hand('Face down')
 
-#    def add_to_hand(self, cards):
-#        self.hand.extend(cards)
-
     def swap(self, h_card, f_card):
-        hand_card = self.hand.pop(h_card)
-        face_card = self.faceup.pop(f_card)
-        self.hand.append(face_card)
-        self.faceup.append(hand_card)
+        hand_card = self.hand.pop_card_at(h_card)
+        face_card = self.faceup.pop_card_at(f_card)
+        self.hand.add_card(face_card)
+        self.faceup.add_card(hand_card)
 

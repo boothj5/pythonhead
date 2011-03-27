@@ -34,5 +34,8 @@ def char_to_bool(c):
     return c.upper() == 'Y'
 
 def request_swap(name):
-    char_to_bool(raw_input(name + " do you want to swap cards?"))
+    return char_to_bool(raw_input(name + " do you want to swap cards?"))
+
+def request_swap_more():
+    return char_to_bool(raw_input('Do you want to swap more cards?'))
 

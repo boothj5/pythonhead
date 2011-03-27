@@ -18,6 +18,9 @@ class Deck:
     def pop_card(self):
         return self.cards.pop()
 
+    def pop_card_at(self, index):
+        return self.cards.pop(index)
+
 class Hand(Deck):
 
     def __init__(self, name):
