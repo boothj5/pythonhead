@@ -29,5 +29,3 @@ class Card:
     
     def __ge__(self, other):
         return self.rank >= other.rank
-
-
