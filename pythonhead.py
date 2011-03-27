@@ -1,6 +1,6 @@
 from random import shuffle
 from player import Player
-from console import clearScreen, showGame
+from console import clearScreen, showGame, cardListToString
 from card import Card
 
 
@@ -12,25 +12,13 @@ def createBigEnoughDeck(numps, numcs):
 def charToBool(c):
     return c.upper() == 'Y'
 
-suits = ["HEARTS", "SPADES", "DIAMONDS", "CLUBS"]
-ranks = ["TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING", "ACE"]
-
-deck = [(x,y) for y in suits for x in ranks]
+deck = [Card(x,y) for y in Card.suits for x in Card.ranks]
 pile = []
 burnt = []
 players = []
 turn = 0
 
 clearScreen()
-
-card1 = Card(2,3)
-card2 = Card(2,0)
-
-print card1
-print card2
-
-print card1 != card2
-
 
 print "Welcome to Pythonhead!"
 print
@@ -59,8 +47,8 @@ raw_input("Press enter")
 
 for player in players:
     clearScreen()
-    print "HAND:", player.hand
-    print "FACEUP:", player.faceup
+    print cardListToString("Hand   : ", player.hand)
+    print cardListToString("faceup : ", player.faceup)
     print
     swap = charToBool(raw_input(player.name + " do you want to swap cards?"))
 
@@ -68,9 +56,9 @@ for player in players:
         clearScreen()
         print player.name
         print
-        print "HAND:"
+        print "Hand    : "
         print player.hand
-        print "FACEUP:"
+        print "Face up : "
         print player.faceup
         print
         hCard = int(raw_input("Which card from your hand do you wish to swap? "))
