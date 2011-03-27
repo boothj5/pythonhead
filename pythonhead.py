@@ -1,71 +1,49 @@
-from random import shuffle
 from player import Player
-from console import clearScreen, showGame, cardListToString
+from console import *
 from card import Card
+from game import Game
 
-
-def createBigEnoughDeck(numps, numcs):
-    cardsNeeded = numps * numcs * 3
-    while len(deck) < cardsNeeded:
-        deck.extend(deck)
-
-def charToBool(c):
+def char_to_bool(c):
     return c.upper() == 'Y'
 
-deck = [Card(x,y) for y in Card.suits for x in Card.ranks]
-pile = []
-burnt = []
-players = []
-turn = 0
+clear_screen()
+welcome()
 
-clearScreen()
+num_players = request_num_players()
+num_cards_each = request_num_cards_each()
 
-print "Welcome to Pythonhead!"
-print
+player_names = []
+for i in range(num_players):
+    player_name = raw_input("Enter name of player " + str(i+1) +  ": ")
+    player_names.extend(player_name)
+ 
+game = Game(num_players, num_cards_each, player_names)
+game.deal()
 
-numPlayers = int(raw_input("Enter number of players: "))
-numCardsEach = int(raw_input("Enter number of cards each: "))
-
-createBigEnoughDeck(numPlayers, numCardsEach)
-shuffle(deck)
-
-for i in range(numPlayers):
-    playerName = raw_input("Enter name of player " + str(i+1) +  ": ")
-    player = Player(playerName)
-    
-    for j in range(numCardsEach):
-        player.hand.append(deck.pop())
-        player.faceup.append(deck.pop())
-        player.facedown.append(deck.pop())
-
-    players.append(player)
-
-clearScreen()
-showGame(pile, burnt, deck, players)
+clear_screen()
+show_game(game)
 
 raw_input("Press enter")
 
-for player in players:
-    clearScreen()
-    print cardListToString("Hand   : ", player.hand)
-    print cardListToString("faceup : ", player.faceup)
+for player in game.players:
+    clear_screen()
+    print card_list_to_string("Hand   : ", player.hand)
+    print card_list_to_string("faceup : ", player.faceup)
     print
-    swap = charToBool(raw_input(player.name + " do you want to swap cards?"))
+    swap = char_to_bool(raw_input(player.name + " do you want to swap cards?"))
 
     if swap:
-        clearScreen()
+        clear_screen()
         print player.name
         print
-        print "Hand    : "
-        print player.hand
-        print "Face up : "
-        print player.faceup
+        print card_list_to_string("Hand   : ", player.hand)
+        print card_list_to_string("faceup : ", player.faceup)
         print
         hCard = int(raw_input("Which card from your hand do you wish to swap? "))
         fCard = int(raw_input("Which card from your face up pile do you wish to swap? "))
         player.swap(hCard-1, fCard-1)
 
-clearScreen()
-showGame(pile, burnt, deck, players)
+clear_screen()
+show_game(game)
 
 
