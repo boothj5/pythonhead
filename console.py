@@ -39,3 +39,17 @@ def request_swap(name):
 def request_swap_more():
     return char_to_bool(raw_input('Do you want to swap more cards?'))
 
+def show_player_swap(player):
+    print player.name
+    print
+    print player.hand
+    print player.faceup
+    print
+ 
+def request_hand_swap():
+    return int(raw_input("Which card from your hand do you wish to swap? "))
+
+def request_faceup_swap():
+    return int(raw_input("Which card from your face up pile do you wish to swap? "))
+
+

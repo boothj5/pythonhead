@@ -3,29 +3,17 @@ from console import *
 from card import Card
 from game import Game
 
-
 def swap_cards(player):
     clear_screen()
-    print player.name
-    print
-    print player.hand
-    print player.faceup
-    print
-    hCard = int(raw_input("Which card from your hand do you wish to swap? "))
-    fCard = int(raw_input("Which card from your face up pile do you wish to swap? "))
+    show_player_swap(player)
+    hCard = request_hand_swap()
+    fCard = request_faceup_swap()
     player.swap(hCard-1, fCard-1)
     clear_screen()
-    print player.name
-    print
-    print player.hand
-    print player.faceup
-    print
- 
+    show_player_swap(player)
     swap_more = request_swap_more()
     if swap_more:
         swap_cards(player)
-
-
 
 clear_screen()
 welcome()
@@ -44,13 +32,11 @@ game.deal()
 clear_screen()
 show_game(game)
 
-raw_input("Press enter to continue:")
+wait_user()
 
 for player in game.players:
     clear_screen()
-    print player.hand
-    print player.faceup
-    print
+    show_player_swap(player)
     swap = request_swap(player.name)
 
     if swap:
