@@ -1,7 +1,9 @@
 from player import Player
 from console import *
-from card import Card
+from card import Card, sh_cmp
 from game import Game
+
+# functions
 
 def swap_cards(player):
     clear_screen()
@@ -15,8 +17,16 @@ def swap_cards(player):
     if swap_more:
         swap_cards(player)
 
+# game engine
+
 clear_screen()
 welcome()
+
+card1 = Card(2, 1)
+card2 = Card(3, 1)
+
+print sh_cmp(card1, card2)
+
 
 num_players = request_num_players()
 num_cards_each = request_num_cards_each()

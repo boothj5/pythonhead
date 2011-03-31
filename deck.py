@@ -1,6 +1,6 @@
 from random import shuffle
 
-from card import Card
+from card import Card, sh_cmp
 
 class Deck:
 
@@ -37,4 +37,7 @@ class Hand(Deck):
     def add_card(self, card):
         self.cards.append(card)
         self.cards.sort()
+        
+    def sort(self):
+        self.cards.sort(sh_cmp)
 

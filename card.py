@@ -29,3 +29,20 @@ class Card:
     
     def __ge__(self, other):
         return self.rank >= other.rank
+
+def sh_cmp(card1, card2):
+        special = [2,7,10]
+        if card1.rank in special and card2.rank in special:
+            return 0
+        elif card1.rank in special and card2.rank not in special:
+            return 1
+        elif card1.rank not in special and card2.rank in special:
+            return -1
+        else:
+            if card1 > card2:
+                return 1
+            elif card1 == card2:
+                return 0
+            else:
+                return -1
+            

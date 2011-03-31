@@ -13,6 +13,8 @@ class Game:
         self.deck = Deck(self.num_players * self.num_cards_each * 3) 
         self.pile = Hand('Pile')
         self.burnt = Hand('Burnt')
+        self.turn = 0
+        
         for i in range(num_players):
             player = Player(player_names[i])
             self.players.append(player)
@@ -23,3 +25,7 @@ class Game:
                 self.players[i].hand.add_card(self.deck.pop_card())
                 self.players[i].faceup.add_card(self.deck.pop_card())
                 self.players[i].facedown.add_card(self.deck.pop_card())
+
+        for i in range(self.num_players):
+            self.players[i].hand.sort()
+            

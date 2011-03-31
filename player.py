@@ -14,4 +14,5 @@ class Player:
         face_card = self.faceup.pop_card_at(f_card)
         self.hand.add_card(face_card)
         self.faceup.add_card(hand_card)
+        self.hand.sort()
 
