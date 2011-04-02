@@ -12,14 +12,14 @@ class Deck:
     def __len__(self):
         return len(self.cards)
 
-    def shuffleDeck(self):
+    def shuffle_deck(self):
         shuffle(self.cards)
 
-    def pop_card(self):
-        return self.cards.pop()
-
-    def pop_card_at(self, index):
-        return self.cards.pop(index)
+    def pop_card(self, index=None):
+        if index is None:
+            return self.cards.pop()
+        else:
+            return self.cards.pop(index)
 
 class Hand(Deck):
 

@@ -20,6 +20,8 @@ class Game:
             self.players.append(player)
 
     def deal(self):
+        self.deck.shuffle_deck()
+        
         for i in range(self.num_players):
             for j in range(self.num_cards_each):
                 self.players[i].hand.add_card(self.deck.pop_card())
