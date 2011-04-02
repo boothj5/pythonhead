@@ -15,21 +15,6 @@ class Card:
     def __lt__(self, other):
         return self.rank < other.rank
 
-    def __le__(self, other):
-        return self.rank <= other.rank
-
-    def __eq__(self, other):
-        return self.rank == other.rank
-    
-    def __ne__(self, other):
-        return self.rank != other.rank
-    
-    def __gt__(self, other):
-        return self.rank > other.rank
-    
-    def __ge__(self, other):
-        return self.rank >= other.rank
-
 def sh_cmp(card):
     if card.rank in [3,4,5,6,8,9,11,12,13,14]:
         return card.rank
