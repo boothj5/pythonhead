@@ -37,6 +37,7 @@ class Game:
         self.pile.extend(cards)
         player.hand = filter(lambda c : not c in cards, player.hand)
         player.hand.extend(self.deck.pop_cards(len(cards)))
+        player.hand.sort(key=sh_cmp)
         
     def _player_with_lowest(self):
         player_lowest = self.players[0]
