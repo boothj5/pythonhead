@@ -4,11 +4,11 @@ from card import sh_cmp
 
 class Game:
 
-    def __init__(self, num_players, num_cards_each, player_names):
+    def __init__(self, num_players, num_cards, player_names):
         self.num_players = num_players
-        self.num_cards_each = num_cards_each
+        self.num_cards = num_cards
         self.players = []
-        self.deck = Deck(self.num_players * self.num_cards_each * 3) 
+        self.deck = Deck(self.num_players * self.num_cards * 3) 
         self.pile = []
         self.burnt = []
         self.turn = 0
@@ -19,7 +19,7 @@ class Game:
     def deal(self):
         self.deck.shuffle()
         for i in range(self.num_players):
-            for j in range(self.num_cards_each):
+            for j in range(self.num_cards):
                 self.players[i].hand.append(self.deck.pop_card())
                 self.players[i].faceup.append(self.deck.pop_card())
                 self.players[i].facedown.append(self.deck.pop_card())
@@ -27,10 +27,10 @@ class Game:
             self.players[i].hand.sort(key=sh_cmp)
 
     def first_move(self):
-        player_with_lowest = self._player_with_lowest()
-        cards_to_lay = self._lowest_cards_to_lay(player_with_lowest)
-        self.lay_cards(player_with_lowest, cards_to_lay)
-        self.turn = self.players.index(player_with_lowest)
+        player = self._player_with_lowest()
+        cards = self._lowest_cards_to_lay(player)
+        self.lay_cards(player, cards)
+        self.turn = self.players.index(player)
         self._next_turn()
             
     def lay_cards(self, player, cards):
@@ -39,19 +39,19 @@ class Game:
         player.hand.extend(self.deck.pop_cards(len(cards)))
         
     def _player_with_lowest(self):
-        player_with_lowest = self.players[0]
+        player_lowest = self.players[0]
         for player in self.players:
-            if min(player.hand, key=sh_cmp) < min(player_with_lowest.hand,
+            if min(player.hand, key=sh_cmp) < min(player_lowest.hand,
                                                   key=sh_cmp):
-                player_with_lowest = player
-        return player_with_lowest       
+                player_lowest = player
+        return player_lowest       
     
     def _lowest_cards_to_lay(self, player):
-        cards_to_lay = [min(player.hand, key=sh_cmp)]
-        cards_to_lay.extend([c for c in player.hand
-                             if c.rank == cards_to_lay[0].rank
-                             and c != cards_to_lay[0]])
-        return cards_to_lay
+        cards = [min(player.hand, key=sh_cmp)]
+        cards.extend([c for c in player.hand
+                             if c.rank == cards[0].rank
+                             and c != cards[0]])
+        return cards
     
     def _next_turn(self):
         self.turn = self.turn + 1
