@@ -29,9 +29,9 @@ class Game:
     def first_move(self):
         player_with_lowest = self._player_with_lowest()
         cards_to_lay = self._lowest_cards_to_lay(player_with_lowest)
-        for card in cards_to_lay:
-            print str(card)
         self.lay_cards(player_with_lowest, cards_to_lay)
+        self.turn = self.players.index(player_with_lowest)
+        self._next_turn()
             
     def lay_cards(self, player, cards):
         self.pile.extend(cards)
@@ -52,7 +52,8 @@ class Game:
                              if c.rank == cards_to_lay[0].rank
                              and c != cards_to_lay[0]])
         return cards_to_lay
-
-        
-        
-        
+    
+    def _next_turn(self):
+        self.turn = self.turn + 1
+        if self.turn == len(self.players):
+            self.turn = 0
