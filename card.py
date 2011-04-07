@@ -1,5 +1,4 @@
 class Card:
-    """represents a card."""
         
     def __init__(self, rank, suit):
         self.rank = rank
@@ -14,9 +13,13 @@ class Card:
 
     def __lt__(self, other):
         return self.rank < other.rank
-
+    
+    def __eq__(self, other):
+        return self.rank == other.rank and self.suit == other.suit
+    
 def sh_cmp(card):
-    if card.rank in [3,4,5,6,8,9,11,12,13,14]:
-        return card.rank
-    else:
+    if card.rank in [2, 7, 10]:
         return 15
+    else:
+        return card.rank
+        

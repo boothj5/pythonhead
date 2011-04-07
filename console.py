@@ -1,7 +1,7 @@
 def clear_screen():
-    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 def show_game(game):
     print game.pile
@@ -10,9 +10,9 @@ def show_game(game):
 
     for player in game.players:
         print player.name
-        print player.hand
-        print player.faceup
-        print player.facedown
+        print "Hand      : " + ", ".join(map(str, player.hand))
+        print "Face up   : " + ", ".join(map(str, player.faceup))
+        print "Face down : " + ", ".join(map(str, player.facedown))
 
 def request_num_players():
     return int(raw_input("Enter number of players: "))
@@ -41,15 +41,13 @@ def request_swap_more():
 
 def show_player_swap(player):
     print player.name
-    print
-    print player.hand
-    print player.faceup
+    print "Hand      : " + ", ".join(map(str, player.hand))
+    print "Face up   : " + ", ".join(map(str, player.faceup))
     print
  
 def request_hand_swap():
     return int(raw_input("Which card from your hand do you wish to swap? "))
 
 def request_faceup_swap():
-    return int(raw_input("Which card from your face up pile do you wish to swap? "))
-
-
+    return int(raw_input("Which card from your face up pile " + 
+                         "do you wish to swap? "))

@@ -1,7 +1,6 @@
-from player import Player
-import console
-from card import Card, sh_cmp
 from game import Game
+
+import console
 
 console.clear_screen()
 console.welcome()
@@ -40,4 +39,4 @@ for player in game.players:
 console.clear_screen()
 console.show_game(game)
 
-
+game.first_move()
