@@ -12,6 +12,7 @@ class Game:
         self.pile = []
         self.burnt = []
         self.turn = 0
+        self.last_move = ""
         for i in range(num_players):
             player = Player(player_names[i])
             self.players.append(player)
@@ -32,6 +33,7 @@ class Game:
         self.lay_cards(player, cards)
         self.turn = self.players.index(player)
         self._next_turn()
+        self.last_move = player.name + " laid: " +  ", ".join(map(str, cards))
             
     def lay_cards(self, player, cards):
         self.pile.extend(cards)
@@ -39,6 +41,9 @@ class Game:
         player.hand.extend(self.deck.pop_cards(len(cards)))
         player.hand.sort(key=sh_cmp)
         
+    def get_current_player(self):
+        return self.players[self.turn]
+    
     def _player_with_lowest(self):
         player_lowest = self.players[0]
         for player in self.players:

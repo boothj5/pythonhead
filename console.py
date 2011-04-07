@@ -8,12 +8,16 @@ def show_game(game):
     print len(game.burnt), "burnt"
     print len(game.deck), "left on deck"
     print
-
     for player in game.players:
         print player.name
         print "Hand      : " + ", ".join(map(str, player.hand))
         print "Face up   : " + ", ".join(map(str, player.faceup))
         print "Face down : " + ", ".join(map(str, player.facedown))
+        print
+    print game.last_move
+
+def line():
+    print
 
 def request_num_players():
     return int(raw_input("Enter number of players: "))
@@ -52,3 +56,6 @@ def request_hand_swap():
 def request_faceup_swap():
     return int(raw_input("Which card from your face up pile " + 
                          "do you wish to swap? "))
+
+def request_move(player):
+    print player.name, "which cards do you wish to lay?"

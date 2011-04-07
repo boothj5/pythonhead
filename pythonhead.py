@@ -1,5 +1,4 @@
 from game import Game
-
 import console
 
 console.clear_screen()
@@ -18,7 +17,6 @@ game.deal()
 
 console.clear_screen()
 console.show_game(game)
-
 console.wait_user()
 
 for player in game.players:
@@ -42,6 +40,7 @@ console.show_game(game)
 game.first_move()
 
 console.wait_user()
-
 console.clear_screen()
 console.show_game(game)
+console.line()
+console.request_move(game.get_current_player())
