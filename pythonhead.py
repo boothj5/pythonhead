@@ -40,3 +40,8 @@ console.clear_screen()
 console.show_game(game)
 
 game.first_move()
+
+console.wait_user()
+
+console.clear_screen()
+console.show_game(game)

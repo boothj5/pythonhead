@@ -4,9 +4,10 @@ def clear_screen():
     print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 def show_game(game):
-    print game.pile
+    print "Pile : " + ", ".join(map(str, game.pile))
     print len(game.burnt), "burnt"
     print len(game.deck), "left on deck"
+    print
 
     for player in game.players:
         print player.name

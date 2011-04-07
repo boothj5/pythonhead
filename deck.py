@@ -17,3 +17,10 @@ class Deck:
 
     def pop_card(self):
         return self.cards.pop()
+        
+    def pop_cards(self, num):
+        cards = []
+        for i in range(num):
+            cards.append(self.pop_card())
+        return cards
+            
