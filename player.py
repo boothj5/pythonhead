@@ -21,5 +21,5 @@ class Player:
     def has_faceup(self):
         return len(self.faceup) > 0
 
-    def recieve(self, cards):
+    def receive(self, cards):
         self.hand.extend(cards)

@@ -2,3 +2,6 @@ Python implementation of the shithead card game
 
 To run:
     python pythonhead.py
+
+To run tests:
+    python runtests.py

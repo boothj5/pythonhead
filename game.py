@@ -99,7 +99,7 @@ class Game:
 
     def pickup(self):
         player = self.current_player()
-        player.recieve(self.pile)
+        player.receive(self.pile)
         player.hand.sort(key=sh_cmp)
         self.last_move = player.name + " picked up " + str(len(self.pile)) + " cards."
         self.pile = []
