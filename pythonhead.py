@@ -49,7 +49,7 @@ def first_move():
 
 def main_game():
     global game
-    if game.can_play(game.current_player()):
+    if game.can_play():
         make_move()
     else:
         print "Cannot play!!"
@@ -62,7 +62,7 @@ def make_move():
         c.bad_move(cards)
         make_move()
     else:
-        game.lay_cards(game.current_player(), cards)
+        game.lay_cards(cards)
         game.next_turn()
         c.clear_screen()
         c.show_game(game)

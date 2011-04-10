@@ -28,14 +28,14 @@ class Game:
             self.players[i].hand.sort(key=sh_cmp)
 
     def first_move(self):
-        player = self.__lowest_player()
-        cards = Game.__lowest_cards(player)
-        self.lay_cards(player, cards)
-        self.turn = self.players.index(player)
+        self.turn = self.players.index(self.lowest_player())
+        cards = self.lowest_cards()
+        self.lay_cards(cards)
         self.next_turn()
             
-    def lay_cards(self, player, cards):
+    def lay_cards(self, cards):
         self.pile.extend(cards)
+        player = self.current_player()
         player.hand = filter(lambda c : c not in cards, player.hand)
         player.hand.extend(self.deck.pop_cards(len(cards)))
         player.hand.sort(key=sh_cmp)
@@ -45,33 +45,36 @@ class Game:
         return self.players[self.turn]
     
     def valid_move(self, cards):
-        if not Game.__same_rank(cards):
+        if not Game.same_rank(cards):
             return False
-        elif Game.__can_lay(cards[0], self.pile):
+        elif Game.can_lay(cards[0], self.pile):
             return True
         else:
             return False
 
-    def can_play(self, player):
+    def can_play(self):
+        player = self.current_player()
         if player.has_hand():
-            return self.can_play_from_hand(player)
+            return self.can_play_from_hand()
         elif player.had_faceup():
-            return self.can_play_from_faceup(player)
+            return self.can_play_from_faceup()
         else:
             return False
         
-    def can_play_from_hand(self, player):
-        return any(map(lambda c : Game.__can_lay(c, self.pile), player.hand))
+    def can_play_from_hand(self):
+        player = self.current_player()
+        return any(map(lambda c : Game.can_lay(c, self.pile), player.hand))
         
-    def can_play_from_faceup(self, player):
-        return any(map(lambda c : Game.__can_lay(c, self.pile), player.faceup))
+    def can_play_from_faceup(self):
+        player = self.current_player()
+        return any(map(lambda c : Game.can_lay(c, self.pile), player.faceup))
 
     def next_turn(self):
         self.turn = self.turn + 1
         if self.turn == len(self.players):
             self.turn = 0
 
-    def __lowest_player(self):
+    def lowest_player(self):
         player_lowest = self.players[0]
         for player in self.players:
             if min(player.hand, key=sh_cmp) < min(player_lowest.hand,
@@ -86,8 +89,8 @@ class Game:
         else:
             return map(lambda i : player.faceup[i], card_indexes)
 
-    @staticmethod
-    def __lowest_cards(player):
+    def lowest_cards(self):
+        player = self.current_player()
         cards = [min(player.hand, key=sh_cmp)]
         cards.extend([c for c in player.hand
                              if c.rank == cards[0].rank
@@ -95,20 +98,19 @@ class Game:
         return cards
 
     @staticmethod
-    def __same_rank(cards):
+    def same_rank(cards):
         return all(map(lambda c : c.rank == cards[0].rank, cards))
 
     @staticmethod
-    def __can_lay(card, pile):
+    def can_lay(card, pile):
         card_on_pile = pile[len(pile) -1]
         rest_of_pile = pile[0:len(pile) -1]
-        
         if not pile:
             return True
         elif card.rank in [2,7,10]:
             return True
         elif card_on_pile.rank == 7:
-            return Game.__can_lay(card, rest_of_pile)
+            return Game.can_lay(card, rest_of_pile)
         elif card.rank >= card_on_pile.rank:
             return True
         else:
