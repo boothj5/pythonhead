@@ -68,3 +68,6 @@ def bad_move(cards):
     
 def good_move(cards):
     print "You chose valid cards " + ", ".join(map(str, cards))
+
+def show_pickup(player):
+    print "Oh dear " + player.name + " you have to pick up."

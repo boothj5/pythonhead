@@ -97,21 +97,30 @@ class Game:
                              and c != cards[0]])
         return cards
 
+    def pickup(self):
+        player = self.current_player()
+        player.recieve(self.pile)
+        player.hand.sort(key=sh_cmp)
+        self.last_move = player.name + " picked up " + str(len(self.pile)) + " cards."
+        self.pile = []
+        self.next_turn()        
+
     @staticmethod
     def same_rank(cards):
         return all(map(lambda c : c.rank == cards[0].rank, cards))
 
     @staticmethod
     def can_lay(card, pile):
-        card_on_pile = pile[len(pile) -1]
-        rest_of_pile = pile[0:len(pile) -1]
         if not pile:
             return True
         elif card.rank in Card.lay_on_anything_ranks:
             return True
-        elif card_on_pile.rank == Card.invisible:
-            return Game.can_lay(card, rest_of_pile)
-        elif card.rank >= card_on_pile.rank:
-            return True
         else:
-            return False
+            card_on_pile = pile[len(pile) -1]
+            rest_of_pile = pile[0:len(pile) -1]
+            if card_on_pile.rank == Card.invisible:
+                return Game.can_lay(card, rest_of_pile)
+            elif card.rank >= card_on_pile.rank:
+                return True
+            else:
+                return False

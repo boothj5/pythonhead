@@ -52,7 +52,13 @@ def main_game():
     if game.can_play():
         make_move()
     else:
-        print "Cannot play!!"
+        c.show_pickup(game.current_player())
+        c.wait_user()
+        game.pickup()
+        c.clear_screen()
+        c.show_game(game)
+        c.line()
+        main_game()
 
 def make_move():
     global game
