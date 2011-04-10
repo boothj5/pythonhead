@@ -44,8 +44,7 @@ class Game:
     def current_player(self):
         return self.players[self.turn]
     
-    def valid_move(self, card_indexes):
-        cards = self.__get_cards(card_indexes)
+    def valid_move(self, cards):
         if not self.__same_rank(cards):
             return False
         elif self.__can_lay(cards[0], self.pile):
@@ -80,7 +79,7 @@ class Game:
                 player_lowest = player
         return player_lowest       
     
-    def __get_cards(self, card_indexes):
+    def get_cards(self, card_indexes):
         player = self.current_player()
         if player.has_hand():
             return map(lambda i : player.hand[i], card_indexes)

@@ -56,11 +56,12 @@ def main_game():
 
 def make_move():
     global game
-    cards = c.request_move(game.current_player())
+    card_indexes = c.request_move(game.current_player())
+    cards = game.get_cards(card_indexes)
     if not game.valid_move(cards):
-        print "BAD MOVE"
+        c.bad_move(cards)
     else:
-        print "MOVE OK"
+        c.good_move(cards)
     
 
 welcome()

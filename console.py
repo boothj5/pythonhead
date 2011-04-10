@@ -61,4 +61,8 @@ def request_move(player):
     cs = map(int, raw_input(player.name + " which cards do you wish to lay? ").split(','))
     return map(lambda c : c - 1, cs)
     
+def bad_move(cards):
+    print "You cannot lay the " + ", ".join(map(str, cards))
     
+def good_move(cards):
+    print "You chose valid cards " + ", ".join(map(str, cards))
