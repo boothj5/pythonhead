@@ -1,6 +1,6 @@
 from deck import Deck
 from player import Player
-from card import sh_cmp
+from card import Card, sh_cmp
 
 class Game:
 
@@ -107,9 +107,9 @@ class Game:
         rest_of_pile = pile[0:len(pile) -1]
         if not pile:
             return True
-        elif card.rank in [2,7,10]:
+        elif card.rank in Card.lay_on_anything_ranks:
             return True
-        elif card_on_pile.rank == 7:
+        elif card_on_pile.rank == Card.invisible:
             return Game.can_lay(card, rest_of_pile)
         elif card.rank >= card_on_pile.rank:
             return True
