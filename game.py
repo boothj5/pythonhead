@@ -29,25 +29,25 @@ class Game:
 
     def first_move(self):
         player = self.__lowest_player()
-        cards = self.__lowest_cards(player)
+        cards = Game.__lowest_cards(player)
         self.lay_cards(player, cards)
         self.turn = self.players.index(player)
-        self.__next_turn()
-        self.last_move = player.name + " laid: " +  ", ".join(map(str, cards))
+        self.next_turn()
             
     def lay_cards(self, player, cards):
         self.pile.extend(cards)
         player.hand = filter(lambda c : c not in cards, player.hand)
         player.hand.extend(self.deck.pop_cards(len(cards)))
         player.hand.sort(key=sh_cmp)
+        self.last_move = player.name + " laid: " +  ", ".join(map(str, cards))
         
     def current_player(self):
         return self.players[self.turn]
     
     def valid_move(self, cards):
-        if not self.__same_rank(cards):
+        if not Game.__same_rank(cards):
             return False
-        elif self.__can_lay(cards[0], self.pile):
+        elif Game.__can_lay(cards[0], self.pile):
             return True
         else:
             return False
@@ -61,12 +61,12 @@ class Game:
             return False
         
     def can_play_from_hand(self, player):
-        return any(map(lambda c : self.__can_lay(c, self.pile), player.hand))
+        return any(map(lambda c : Game.__can_lay(c, self.pile), player.hand))
         
     def can_play_from_faceup(self, player):
-        return any(map(lambda c : self.__can_lay(c, self.pile), player.faceup))
+        return any(map(lambda c : Game.__can_lay(c, self.pile), player.faceup))
 
-    def __next_turn(self):
+    def next_turn(self):
         self.turn = self.turn + 1
         if self.turn == len(self.players):
             self.turn = 0
@@ -100,13 +100,16 @@ class Game:
 
     @staticmethod
     def __can_lay(card, pile):
+        card_on_pile = pile[len(pile) -1]
+        rest_of_pile = pile[0:len(pile) -1]
+        
         if not pile:
             return True
         elif card.rank in [2,7,10]:
             return True
-        elif card.rank == 7:
-            return can_lay(card, pile[1:])
-        elif card.rank >= pile[0].rank:
+        elif card_on_pile.rank == 7:
+            return Game.__can_lay(card, rest_of_pile)
+        elif card.rank >= card_on_pile.rank:
             return True
         else:
             return False

@@ -60,9 +60,14 @@ def make_move():
     cards = game.get_cards(card_indexes)
     if not game.valid_move(cards):
         c.bad_move(cards)
+        make_move()
     else:
-        c.good_move(cards)
-    
+        game.lay_cards(game.current_player(), cards)
+        game.next_turn()
+        c.clear_screen()
+        c.show_game(game)
+        c.line()
+        main_game()
 
 welcome()
 create_game()

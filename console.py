@@ -4,7 +4,9 @@ def clear_screen():
     print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 def show_game(game):
-    print "Pile : " + ", ".join(map(str, game.pile))
+    string_pile = map(str, game.pile)
+    string_pile.reverse()
+    print "Pile : " + ", ".join(string_pile)
     print len(game.burnt), "burnt"
     print len(game.deck), "left on deck"
     print
