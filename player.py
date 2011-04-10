@@ -14,3 +14,9 @@ class Player:
         self.hand.append(face_card)
         self.faceup.append(hand_card)
         self.hand.sort(key=sh_cmp)
+        
+    def has_hand(self):
+        return len(self.hand) > 0
+        
+    def has_faceup(self):
+        return len(self.faceup) > 0

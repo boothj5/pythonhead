@@ -58,4 +58,7 @@ def request_faceup_swap():
                          "do you wish to swap? "))
 
 def request_move(player):
-    print player.name, "which cards do you wish to lay?"
+    cs = map(int, raw_input(player.name + " which cards do you wish to lay? ").split(','))
+    return map(lambda c : c - 1, cs)
+    
+    
