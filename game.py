@@ -21,9 +21,9 @@ class Game:
         self.deck.shuffle()
         for i in range(self.num_players):
             for j in range(self.num_cards):
-                self.players[i].hand.append(self.deck.pop_card())
-                self.players[i].faceup.append(self.deck.pop_card())
-                self.players[i].facedown.append(self.deck.pop_card())
+                self.players[i].hand.extend(self.deck.pop_card())
+                self.players[i].faceup.extend(self.deck.pop_card())
+                self.players[i].facedown.extend(self.deck.pop_card())
         for i in range(self.num_players):
             self.players[i].hand.sort(key=sh_cmp)
 
@@ -37,7 +37,7 @@ class Game:
         self.pile.extend(cards)
         player = self.current_player()
         player.hand = filter(lambda c : c not in cards, player.hand)
-        player.hand.extend(self.deck.pop_cards(len(cards)))
+        player.hand.extend(self.deck.pop_card(len(cards)))
         player.hand.sort(key=sh_cmp)
         self.last_move = player.name + " laid: " +  ", ".join(map(str, cards))
         
