@@ -1,13 +1,11 @@
 import unittest
-from cardtest import TestCard
-from playertest import TestPlayer
-from decktest import TestDeck
+from test_card import TestCard
+from test_player import TestPlayer
+from test_deck import TestDeck
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestCard)
-unittest.TextTestRunner(verbosity=0).run(suite)
+test_cases = ["test_card",
+              "test_player",
+              "test_deck"]
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestDeck)
-unittest.TextTestRunner(verbosity=0).run(suite)
-
-suite = unittest.TestLoader().loadTestsFromTestCase(TestPlayer)
+suite = unittest.TestLoader().loadTestsFromNames(test_cases)
 unittest.TextTestRunner(verbosity=0).run(suite)
