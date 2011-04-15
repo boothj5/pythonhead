@@ -46,3 +46,13 @@ class TestCard(unittest.TestCase):
         expected_result = [self.eight, self.seven]
         cards.sort(key=sh_cmp)
         self.assertEqual(cards, expected_result)
+    
+    def test_cards_equal(self):
+        card1 = Card(3,2)
+        card2 = Card(3,2)
+        self.assertEqual(card1, card2)
+
+    def test_cards_not_equal(self):
+        card1 = Card(3,2)
+        card2 = Card(3,1)
+        self.assertNotEqual(card1, card2)

@@ -24,41 +24,119 @@ class TestPlayer(unittest.TestCase):
         self.assertFalse(self.james.has_hand())
 
     def test_player_has_hand_one_card(self):
-        self.james.hand.append(self.two)
+        self.james.hand = [self.two]
         self.assertTrue(self.james.has_hand())
 
     def test_player_has_hand_two_cards(self):
-        self.james.hand.extend([self.two, self.ace])
+        self.james.hand = [self.two, self.ace]
         self.assertTrue(self.james.has_hand())
 
     def test_player_not_has_faceup(self):
         self.assertFalse(self.james.has_faceup())
 
     def test_player_has_faceup_one_card(self):
-        self.james.faceup.append(self.seven)
+        self.james.faceup = [self.seven]
         self.assertTrue(self.james.has_faceup())
 
     def test_player_has_faceup_two_cards(self):
-        self.james.faceup.extend([self.nine, self.three])
+        self.james.faceup = [self.nine, self.three]
         self.assertTrue(self.james.has_faceup())
 
-    def test_recieve_none(self):
-        self.james.hand.append(self.ten)
+    def test_receive_none_when_has_one(self):
+        self.james.hand = [self.ten]
         self.james.receive([])
         expected_result = [self.ten]
         self.assertEqual(self.james.hand, expected_result)
         
-    def test_recieve_one_when_empty(self):
+    def test_receive_one_when_has_none(self):
         self.james.receive([self.jack])
         expected_result = [self.jack]
         self.assertEqual(self.james.hand, expected_result)
 
-    def test_recieve_one_when_three(self):
-        self.james.hand.extend([self.jack, self.nine, self.ace])
+    def test_receive_one_when_has_three(self):
+        self.james.hand = [self.jack, self.nine, self.ace]
         self.james.receive([self.two])
         receieved = self.jack in self.james.hand and \
                     self.nine in self.james.hand and \
                     self.ace in self.james.hand and \
-                    self.two in self.james.hand
+                    self.two in self.james.hand and \
+                    len(self.james.hand) == 4
         self.assertTrue(receieved)
 
+    def test_receive_four(self):
+        self.james.hand = [self.jack]
+        self.james.receive([self.two, self.three, self.seven, self.king])
+        receieved = self.jack in self.james.hand and \
+                    self.two in self.james.hand and \
+                    self.three in self.james.hand and \
+                    self.seven in self.james.hand and \
+                    self.king in self.james.hand and \
+                    len(self.james.hand) == 5
+        self.assertTrue(receieved)
+
+    def test_swap(self):
+        self.james.hand = [self.jack, self.nine, self.ace, self.three]
+        self.james.faceup = [self.eight, self.ten, self.four, self.six]
+        self.james.swap(1, 2)
+        correctHand = self.jack in self.james.hand and \
+                      self.ace in self.james.hand and \
+                      self.three in self.james.hand and \
+                      self.four in self.james.hand and \
+                      len(self.james.hand) == 4
+        correctFaceup = self.eight in self.james.faceup and \
+                        self.ten in self.james.faceup and \
+                        self.nine in self.james.faceup and \
+                        self.six in self.james.faceup and \
+                        len(self.james.faceup) == 4
+        self.assertTrue(correctHand and correctFaceup)
+    
+    def test_swap_first_with_first(self):
+        self.james.hand = [self.jack, self.nine, self.ace, self.three]
+        self.james.faceup = [self.eight, self.ten, self.four, self.six]
+        self.james.swap(0, 0)
+        correctHand = self.eight in self.james.hand and \
+                      self.nine in self.james.hand and \
+                      self.ace in self.james.hand and \
+                      self.three in self.james.hand and \
+                      len(self.james.hand) == 4
+        correctFaceup = self.jack in self.james.faceup and \
+                        self.ten in self.james.faceup and \
+                        self.four in self.james.faceup and \
+                        self.six in self.james.faceup and \
+                        len(self.james.faceup) == 4
+        self.assertTrue(correctHand)
+        self.assertTrue(correctFaceup)
+
+    def test_swap_last_with_last(self):
+        self.james.hand = [self.jack, self.nine, self.ace, self.three]
+        self.james.faceup = [self.eight, self.ten, self.four, self.six]
+        self.james.swap(3, 3)
+        correctHand = self.jack in self.james.hand and \
+                      self.nine in self.james.hand and \
+                      self.ace in self.james.hand and \
+                      self.six in self.james.hand and \
+                      len(self.james.hand) == 4
+        correctFaceup = self.eight in self.james.faceup and \
+                        self.ten in self.james.faceup and \
+                        self.four in self.james.faceup and \
+                        self.three in self.james.faceup and \
+                        len(self.james.faceup) == 4
+        self.assertTrue(correctHand)
+        self.assertTrue(correctFaceup)
+        
+    def test_swap_first_with_last(self):
+        self.james.hand = [self.jack, self.nine, self.ace, self.three]
+        self.james.faceup = [self.eight, self.ten, self.four, self.six]
+        self.james.swap(0, 3)
+        correctHand = self.six in self.james.hand and \
+                      self.nine in self.james.hand and \
+                      self.ace in self.james.hand and \
+                      self.three in self.james.hand and \
+                      len(self.james.hand) == 4
+        correctFaceup = self.eight in self.james.faceup and \
+                        self.ten in self.james.faceup and \
+                        self.four in self.james.faceup and \
+                        self.jack in self.james.faceup and \
+                        len(self.james.faceup) == 4
+        self.assertTrue(correctHand)
+        self.assertTrue(correctFaceup)

@@ -66,13 +66,30 @@ class TestDeck(unittest.TestCase):
         result = self.deck.pop_card(1)
         self.assertEqual([Card(14,4)], result)
 
-    def test_pop_one_from_deck_leaves_51(self):
-        self.deck.pop_card(1)
-        result = len(self.deck)
-        self.assertEqual(51, result)
+    def test_pop_one_from_deck(self):
+        card = self.deck.pop_card()[0]
+        remaining_length = len(self.deck)
+        still_in_deck = False
+        for i in range(51):
+            test_card = self.deck.pop_card()[0]
+            if test_card == card:
+                still_in_deck = True
+                break
+        self.assertEqual(remaining_length, 51)
+        self.assertFalse(still_in_deck)
 
-    def test_pop_one_from_deck_removes_from_deck(self):
-        self.deck.pop_card(1)
-        result = len(self.deck)
-        self.assertEqual(51, result)
+
+    def test_pop_three_from_deck(self):
+        cards = self.deck.pop_card(3)
+        remaining_length = len(self.deck)
+        still_in_deck = False
+        for i in range(49):
+            test_card = self.deck.pop_card()[0]
+            if test_card in cards:
+                still_in_deck = True
+                break
+        self.assertEqual(remaining_length, 49)
+        self.assertFalse(still_in_deck)
+
+
 
