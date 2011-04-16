@@ -25,9 +25,12 @@ class TestGame(unittest.TestCase):
     
     def test_deal(self):
         self.game.deal()
-        hands_dealt = reduce(lambda acc, p : len(p.hand) == 3 and acc, self.game.players, True)
-        ups_dealt = reduce(lambda acc, p : len(p.faceup) == 3 and acc, self.game.players, True)
-        downs_dealt = reduce(lambda acc, p : len(p.facedown) == 3 and acc, self.game.players, True)
+        hands_dealt = reduce(lambda acc, p : len(p.hand) == 3 and acc,
+                             self.game.players, True)
+        ups_dealt = reduce(lambda acc, p : len(p.faceup) == 3 and acc,
+                           self.game.players, True)
+        downs_dealt = reduce(lambda acc, p : len(p.facedown) == 3 and acc,
+                             self.game.players, True)
         removed_from_deck = len(self.game.deck) == 52 - 18
         self.assertTrue(hands_dealt)
         self.assertTrue(ups_dealt)
@@ -41,14 +44,19 @@ class TestGame(unittest.TestCase):
         card_dealt_from_deck = len(self.game.deck) == 51
         card_dealt_to_player = len(self.game.players[1].hand) == 3
         correct_card_laid = self.game.pile.pop() == self.five
+        card_no_longer_in_hand = self.five not in self.game.players[1].hand
         moved_to_next = self.game.turn == 0
         self.assertTrue(card_dealt_from_deck)
+        self.assertTrue(card_no_longer_in_hand)
         self.assertTrue(card_dealt_to_player)
         self.assertTrue(correct_card_laid)
         self.assertTrue(moved_to_next)
         
     def test_first_move_three_cards(self):
-        self.game.players[0].hand = [self.three1, self.three2, self.three3, self.two]
+        self.game.players[0].hand = [self.three1,
+                                     self.three2,
+                                     self.three3,
+                                     self.two]
         self.game.players[1].hand = [self.five, self.nine, self.ten, self.eight]
         self.game.first_move()
         card_dealt_from_deck = len(self.game.deck) == 49
@@ -60,8 +68,45 @@ class TestGame(unittest.TestCase):
         correct_cards_laid = self.three1 in cards_laid and \
                              self.three2 in cards_laid and \
                              self.three3 in cards_laid
+        cards_no_longer_in_hand = self.three1 not in self.game.players[0].hand and \
+                                  self.three2 not in self.game.players[0].hand and \
+                                  self.three3 not in self.game.players[0].hand
         moved_to_next = self.game.turn == 1
         self.assertTrue(card_dealt_from_deck)
         self.assertTrue(card_dealt_to_player)
         self.assertTrue(correct_cards_laid)
         self.assertTrue(moved_to_next)
+
+    def test_lay_one_card(self):
+        self.game.players[0].hand = [self.five, self.nine, self.ten, self.eight]
+        self.game.lay_cards([self.nine])
+        card_dealt_from_deck = len(self.game.deck) == 51
+        card_dealt_to_player = len(self.game.players[0].hand) == 4
+        correct_card_laid = self.game.pile.pop() == self.nine
+        card_no_longer_in_hand = self.nine not in self.game.players[0].hand
+        self.assertTrue(card_dealt_from_deck)
+        self.assertTrue(card_dealt_to_player)
+        self.assertTrue(correct_card_laid)
+        self.assertTrue(card_no_longer_in_hand)
+        
+        
+    def test_lay_three_cards(self):
+        self.game.players[1].hand = [self.five, self.three2, self.three1, self.three3]
+        self.game.turn = 1
+        self.game.lay_cards([self.three1, self.three3, self.three2])
+        card_dealt_from_deck = len(self.game.deck) == 49
+        card_dealt_to_player = len(self.game.players[1].hand) == 4
+        cards_laid = []
+        cards_laid.append(self.game.pile.pop())
+        cards_laid.append(self.game.pile.pop())
+        cards_laid.append(self.game.pile.pop())
+        correct_cards_laid = self.three1 in cards_laid and \
+                             self.three2 in cards_laid and \
+                             self.three3 in cards_laid
+        cards_no_longer_in_hand = self.three1 not in self.game.players[1].hand and \
+                                  self.three2 not in self.game.players[1].hand and \
+                                  self.three3 not in self.game.players[1].hand
+        self.assertTrue(card_dealt_from_deck)
+        self.assertTrue(card_dealt_to_player)
+        self.assertTrue(correct_cards_laid)
+        self.assertTrue(cards_no_longer_in_hand)
