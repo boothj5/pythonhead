@@ -175,4 +175,19 @@ class TestGame(unittest.TestCase):
         self.game.pile.extend([self.three1, self.ace])
         self.game.players[0].hand = []
         self.game.players[0].faceup = [self.four, self.king]
-        self.assertFalse(self.game.can_play())        
+        self.assertFalse(self.game.can_play())
+        
+    def test_move_to_next_player(self):
+        self.game.next_turn()
+        self.assertEquals(self.game.turn, 1)
+        
+    def test_move_to_next_player_rolls(self):
+        self.game.next_turn()
+        self.game.next_turn()
+        self.assertEquals(self.game.turn, 0)
+        
+    def test_lowest_player(self):
+        self.game.players[0].hand = [self.seven, self.ten]
+        self.game.players[1].hand = [self.nine]
+        player = self.game.lowest_player()
+        self.assertEquals(player.name, "Mark")
