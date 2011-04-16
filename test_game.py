@@ -110,3 +110,13 @@ class TestGame(unittest.TestCase):
         self.assertTrue(card_dealt_to_player)
         self.assertTrue(correct_cards_laid)
         self.assertTrue(cards_no_longer_in_hand)
+        
+    def test_first_current_player(self):
+        player = self.game.current_player()
+        self.assertEquals(player.name, "James")
+                        
+    def test_second_current_player(self):
+        self.game.turn = 1
+        player = self.game.current_player()
+        self.assertEquals(player.name, "Mark")
+                       
