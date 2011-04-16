@@ -129,3 +129,26 @@ class TestGame(unittest.TestCase):
     def test_cannot_lay_different_cards(self):
         self.assertFalse(self.game.valid_move([self.ace, self.ten]))
         
+    def test_can_lay_same_rank(self):
+        self.game.pile.append(self.three1)
+        self.assertTrue(self.game.valid_move([self.three2]))
+        
+    def test_can_lay_five_on_four(self):
+        self.game.pile.append(self.four)
+        self.assertTrue(self.game.valid_move([self.four]))
+
+    def test_can_lay_two_on_three(self):
+        self.game.pile.append(self.three1)
+        self.assertTrue(self.game.valid_move([self.two]))
+
+    def test_can_lay_seven_on_nine(self):
+        self.game.pile.append(self.nine)
+        self.assertTrue(self.game.valid_move([self.seven]))
+
+    def test_can_lay_ten_on_queen(self):
+        self.game.pile.append(self.queen)
+        self.assertTrue(self.game.valid_move([self.ten]))
+
+    def test_can_lay_seven_invisible(self):
+        self.game.pile.extend([self.three1, self.seven])
+        self.assertTrue(self.game.valid_move([self.four]))
