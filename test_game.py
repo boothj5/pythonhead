@@ -119,4 +119,13 @@ class TestGame(unittest.TestCase):
         self.game.turn = 1
         player = self.game.current_player()
         self.assertEquals(player.name, "Mark")
-                       
+
+    def test_can_lay_three_on_empty(self):
+        self.assertTrue(self.game.valid_move([self.three1]))
+        
+    def test_can_lay_threes_on_empty(self):
+        self.assertTrue(self.game.valid_move([self.three1, self.three2, self.three3]))
+        
+    def test_cannot_lay_different_cards(self):
+        self.assertFalse(self.game.valid_move([self.ace, self.ten]))
+        

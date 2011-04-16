@@ -10,4 +10,4 @@ test_cases = ["test_card",
               "test_game"]
 
 suite = unittest.TestLoader().loadTestsFromNames(test_cases)
-unittest.TextTestRunner(verbosity=0).run(suite)
+unittest.TextTestRunner(verbosity=2).run(suite)
