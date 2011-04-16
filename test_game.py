@@ -152,3 +152,27 @@ class TestGame(unittest.TestCase):
     def test_can_lay_seven_invisible(self):
         self.game.pile.extend([self.three1, self.seven])
         self.assertTrue(self.game.valid_move([self.four]))
+
+    def test_can_play_when_playable_cards_in_hand(self):
+        self.game.pile.extend([self.three1, self.ace])
+        self.game.players[0].hand = [self.seven]
+        self.game.players[0].faceup = [self.four]
+        self.assertTrue(self.game.can_play())
+        
+    def test_cannot_play_when_nonplayable_cards_in_hand(self):
+        self.game.pile.extend([self.three1, self.ace])
+        self.game.players[0].hand = [self.king]
+        self.game.players[0].faceup = [self.four]
+        self.assertFalse(self.game.can_play())
+        
+    def test_can_play_when_playable_cards_in_faceup(self):
+        self.game.pile.extend([self.three1, self.ace])
+        self.game.players[0].hand = []
+        self.game.players[0].faceup = [self.nine, self.ace]
+        self.assertTrue(self.game.can_play())
+        
+    def test_cannot_play_when_nonplayable_cards_in_faceup(self):
+        self.game.pile.extend([self.three1, self.ace])
+        self.game.players[0].hand = []
+        self.game.players[0].faceup = [self.four, self.king]
+        self.assertFalse(self.game.can_play())        

@@ -56,7 +56,7 @@ class Game:
         player = self.current_player()
         if player.has_hand():
             return self.can_play_from_hand()
-        elif player.had_faceup():
+        elif player.has_faceup():
             return self.can_play_from_faceup()
         else:
             return False
