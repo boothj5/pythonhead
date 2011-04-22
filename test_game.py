@@ -288,3 +288,18 @@ class TestGame(unittest.TestCase):
         self.assertTrue(correct_cards_burnt)
         self.assertEquals(len(self.game.burnt), 6)
         self.assertEquals(self.game.turn, 0)
+
+    def test_miss_a_go(self):
+        self.game.turn = 1
+        self.game.players[1].hand = [self.five, self.nine, self.three1, self.eight]
+        self.game.pile = [self.ace, self.two, self.three4, self.three2, self.three3]
+        self.game.lay_cards([self.eight])
+        self.assertEquals(self.game.turn, 1)
+
+    def test_miss_a_go_rolls(self):
+        self.game.turn = 0
+        self.game.players[0].hand = [self.five, self.nine, self.three1, self.eight]
+        self.game.pile = [self.ace, self.two, self.three4, self.three2, self.three3]
+        self.game.lay_cards([self.eight])
+        self.assertEquals(self.game.turn, 0)
+                

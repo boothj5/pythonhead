@@ -46,13 +46,18 @@ class Game:
             did_burn = True
         if (not did_burn):
             self.next_turn()
+            if (self.laid_miss_a_go_card()):
+                self.next_turn()
         
     def laid_burn_card(self):
-        return (self.pile[len(self.pile)-1].rank == Card.burn)
+        return (self.pile[-1].rank == Card.burn)
     
     def four_of_a_kind_on_pile(self):
         return (len(self.pile) >= 4 and Game.same_rank(self.pile[-4:]))
 
+    def laid_miss_a_go_card(self):
+        return (self.pile[-1].rank == Card.miss_a_go)
+    
     def current_player(self):
         return self.players[self.turn]
     
