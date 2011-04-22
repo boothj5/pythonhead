@@ -77,8 +77,8 @@ class Game:
     def lowest_player(self):
         player_lowest = self.players[0]
         for player in self.players:
-            if min(player.hand, key=sh_cmp) < min(player_lowest.hand,
-                                                  key=sh_cmp):
+            if sh_cmp(min(player.hand, key=sh_cmp)) < sh_cmp(min(player_lowest.hand,
+                                                  key=sh_cmp)):
                 player_lowest = player
         return player_lowest       
     

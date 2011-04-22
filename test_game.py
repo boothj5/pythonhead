@@ -186,8 +186,20 @@ class TestGame(unittest.TestCase):
         self.game.next_turn()
         self.assertEquals(self.game.turn, 0)
         
-    def test_lowest_player(self):
+    def test_lowest_player_normal_cards(self):
+        self.game.players[0].hand = [self.four, self.five]
+        self.game.players[1].hand = [self.three1]
+        player = self.game.lowest_player()
+        self.assertEquals(player.name, "Mark")
+        
+    def test_lowest_player_when_one_player_has_special_cards(self):
+        self.game.players[0].hand = [self.seven, self.ten]
+        self.game.players[1].hand = [self.three1]
+        player = self.game.lowest_player()
+        self.assertEquals(player.name, "Mark")        
+        
+    def test_lowest_player_when_one_player_has_only_special_cards(self):
         self.game.players[0].hand = [self.seven, self.ten]
         self.game.players[1].hand = [self.nine]
         player = self.game.lowest_player()
-        self.assertEquals(player.name, "Mark")
+        self.assertEquals(player.name, "Mark")                
