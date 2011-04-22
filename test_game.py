@@ -252,3 +252,24 @@ class TestGame(unittest.TestCase):
         
     def test_same_rank_return_false_when_two_of_three_same(self):
         self.assertFalse(Game.same_rank([self.three1, self.three1, self.ten]))
+        
+    def test_laid_burn_card_returns_false(self):
+        self.game.pile = [self.three1, self.ten, self.ace]
+        self.assertFalse(self.game.laid_burn_card())
+        
+    def test_laid_burn_card_returns_true(self):
+        self.game.pile = [self.three1, self.ace, self.ten]
+        self.assertTrue(self.game.laid_burn_card())
+        
+    def test_burn(self):
+        self.game.players[0].hand = [self.five, self.nine, self.ten, self.eight]
+        self.game.pile = [self.four, self.ace]
+        self.game.lay_cards([self.ten])
+        correct_cards_burnt = self.four in self.game.burnt and \
+                              self.ace in self.game.burnt and \
+                              self.ten in self.game.burnt
+        self.assertEquals(self.game.pile, [])
+        self.assertTrue(correct_cards_burnt)
+        self.assertEquals(len(self.game.burnt), 3)
+        self.assertEquals(self.game.turn, 0)
+        

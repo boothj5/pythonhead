@@ -69,7 +69,6 @@ def make_move():
         make_move()
     else:
         game.lay_cards(cards)
-        game.next_turn()
         c.clear_screen()
         c.show_game(game)
         c.line()

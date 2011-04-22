@@ -31,16 +31,25 @@ class Game:
         self.turn = self.players.index(self.lowest_player())
         cards = self.lowest_cards()
         self.lay_cards(cards)
-        self.next_turn()
             
     def lay_cards(self, cards):
+        did_burn = False
         self.pile.extend(cards)
         player = self.current_player()
         player.hand = filter(lambda c : c not in cards, player.hand)
         player.hand.extend(self.deck.pop_card(len(cards)))
         player.hand.sort(key=sh_cmp)
         self.last_move = player.name + " laid: " +  ", ".join(map(str, cards))
+        if (self.laid_burn_card()):
+            self.burnt.extend(self.pile)
+            self.pile = []
+            did_burn = True
+        if (not did_burn):
+            self.next_turn()
         
+    def laid_burn_card(self):
+        return (self.pile[len(self.pile)-1].rank == Card.burn)
+    
     def current_player(self):
         return self.players[self.turn]
     
