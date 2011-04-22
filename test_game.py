@@ -202,4 +202,53 @@ class TestGame(unittest.TestCase):
         self.game.players[0].hand = [self.seven, self.ten]
         self.game.players[1].hand = [self.nine]
         player = self.game.lowest_player()
-        self.assertEquals(player.name, "Mark")                
+        self.assertEquals(player.name, "Mark")
+        
+    def test_get_cards(self):
+        self.game.players[0].hand = [self.nine, self.ten, self.three1]
+        self.assertEquals([self.nine, self.three1], self.game.get_cards([0,2]))
+
+    def test_get_cards_from_faceup(self):
+        self.game.players[0].hand = []
+        self.game.players[0].faceup = [self.nine, self.ten, self.three1]
+        self.assertEquals([self.nine, self.three1], self.game.get_cards([0,2]))
+
+
+    def test_get_cards_correct_player(self):
+        self.game.players[0].hand = [self.nine, self.ten, self.three1]
+        self.game.players[1].hand = [self.ace, self.king, self.nine]
+        self.game.turn = 1
+        self.assertEquals([self.king, self.nine], self.game.get_cards([1,2]))
+        
+    def test_lowest_cards(self):
+        self.game.players[0].hand = [self.ace, self.three1, self.nine]
+        result = self.game.lowest_cards()
+        self.assertEquals([self.three1], result)
+
+    def test_lowest_cards_when_multiple_same(self):
+        self.game.players[0].hand = [self.three2, self.three1, self.nine]
+        result = self.game.lowest_cards()
+        self.assertEquals([self.three2, self.three1], result)
+
+    def test_pickup(self):
+        self.game.pile = [self.ace, self.three1, self.nine]
+        self.game.pickup()
+        cards_picked_up = self.ace in self.game.players[0].hand and \
+                          self.three1 in self.game.players[0].hand and \
+                          self.nine in self.game.players[0].hand
+        self.assertTrue(cards_picked_up)
+        self.assertEquals(self.game.pile, [])
+        self.assertEquals(self.game.last_move, "James picked up 3 cards.")
+        self.assertEquals(self.game.turn, 1)
+        
+    def test_same_rank_returns_true(self):
+        self.assertTrue(Game.same_rank([self.three1, self.three2, self.three3]))
+        
+    def test_same_rank_returns_true_one_card(self):
+        self.assertTrue(Game.same_rank([self.nine]))
+
+    def test_same_rank_returns_false(self):
+        self.assertFalse(Game.same_rank([self.nine, self.ten]))
+        
+    def test_same_rank_return_false_when_two_of_three_same(self):
+        self.assertFalse(Game.same_rank([self.three1, self.three1, self.ten]))
