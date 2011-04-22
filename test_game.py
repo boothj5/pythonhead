@@ -11,6 +11,7 @@ class TestGame(unittest.TestCase):
         self.three1 = Card(3, 1)
         self.three2 = Card(3, 2)
         self.three3 = Card(3, 3)
+        self.three4 = Card(3, 4)
         self.four = Card(4, 1)
         self.five = Card(5, 1)
         self.six = Card(6, 1)
@@ -261,7 +262,7 @@ class TestGame(unittest.TestCase):
         self.game.pile = [self.three1, self.ace, self.ten]
         self.assertTrue(self.game.laid_burn_card())
         
-    def test_burn(self):
+    def test_burn_when_burn_card_laid(self):
         self.game.players[0].hand = [self.five, self.nine, self.ten, self.eight]
         self.game.pile = [self.four, self.ace]
         self.game.lay_cards([self.ten])
@@ -273,3 +274,17 @@ class TestGame(unittest.TestCase):
         self.assertEquals(len(self.game.burnt), 3)
         self.assertEquals(self.game.turn, 0)
         
+    def test_burn_when_four_of_a_kind_on_pile(self):
+        self.game.players[0].hand = [self.five, self.nine, self.three1, self.eight]
+        self.game.pile = [self.ace, self.two, self.three4, self.three2, self.three3]
+        self.game.lay_cards([self.three1])
+        correct_cards_burnt = self.ace in self.game.burnt and \
+                              self.two in self.game.burnt and \
+                              self.three4 in self.game.burnt and \
+                              self.three2 in self.game.burnt and \
+                              self.three3 in self.game.burnt and \
+                              self.three1 in self.game.burnt
+        self.assertEquals(self.game.pile, [])
+        self.assertTrue(correct_cards_burnt)
+        self.assertEquals(len(self.game.burnt), 6)
+        self.assertEquals(self.game.turn, 0)

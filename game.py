@@ -40,7 +40,7 @@ class Game:
         player.hand.extend(self.deck.pop_card(len(cards)))
         player.hand.sort(key=sh_cmp)
         self.last_move = player.name + " laid: " +  ", ".join(map(str, cards))
-        if (self.laid_burn_card()):
+        if (self.laid_burn_card() or self.four_of_a_kind_on_pile()):
             self.burnt.extend(self.pile)
             self.pile = []
             did_burn = True
@@ -50,6 +50,9 @@ class Game:
     def laid_burn_card(self):
         return (self.pile[len(self.pile)-1].rank == Card.burn)
     
+    def four_of_a_kind_on_pile(self):
+        return (len(self.pile) >= 4 and Game.same_rank(self.pile[-4:]))
+
     def current_player(self):
         return self.players[self.turn]
     
