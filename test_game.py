@@ -54,6 +54,7 @@ class TestGame(unittest.TestCase):
         self.assertTrue(moved_to_next)
         
     def test_first_move_three_cards(self):
+        self.game.num_cards = 4
         self.game.players[0].hand = [self.three1,
                                      self.three2,
                                      self.three3,
@@ -79,6 +80,7 @@ class TestGame(unittest.TestCase):
         self.assertTrue(moved_to_next)
 
     def test_lay_one_card(self):
+        self.game.num_cards = 4
         self.game.players[0].hand = [self.five, self.nine, self.ten, self.eight]
         self.game.lay_cards([self.nine])
         card_dealt_from_deck = len(self.game.deck) == 51
@@ -92,6 +94,7 @@ class TestGame(unittest.TestCase):
         
         
     def test_lay_three_cards(self):
+        self.game.num_cards = 4
         self.game.players[1].hand = [self.five, self.three2, self.three1, self.three3]
         self.game.turn = 1
         self.game.lay_cards([self.three1, self.three3, self.three2])
@@ -112,6 +115,61 @@ class TestGame(unittest.TestCase):
         self.assertTrue(correct_cards_laid)
         self.assertTrue(cards_no_longer_in_hand)
         
+    def test_lay_card_inludes_deal_when_less_than_hand_size(self):
+        self.game.players[0].hand = [self.five, self.three2, self.ace]
+        self.game.turn = 0
+        self.game.deck.cards = [self.king, self.queen]
+        self.game.lay_cards([self.five])
+        correct_cards_in_hand = self.queen in self.game.players[0].hand and \
+                                self.three2 in self.game.players[0].hand and \
+                                self.ace in self.game.players[0].hand
+        correct_card_laid = self.game.pile == [self.five]
+        correct_left_on_deck = self.game.deck.cards == [self.king]
+        self.assertTrue(correct_cards_in_hand)
+        self.assertEqual(len(self.game.players[0].hand), 3)
+        self.assertEqual(self.game.pile, [self.five])
+        self.assertEqual(self.game.deck.cards, [self.king])
+
+    def test_no_deal_when_cards_laid_and_hand_big_enough(self):
+        self.game.players[0].hand = [self.five, self.three2, self.ace, self.four]
+        self.game.turn = 0
+        self.game.deck.cards = [self.king, self.queen]
+        self.game.lay_cards([self.five])
+        correct_cards_in_hand = self.four in self.game.players[0].hand and \
+                                self.three2 in self.game.players[0].hand and \
+                                self.ace in self.game.players[0].hand
+        self.assertTrue(correct_cards_in_hand)
+        self.assertEqual(len(self.game.players[0].hand), 3)
+        self.assertEqual(self.game.pile, [self.five])
+        self.assertEqual(self.game.deck.cards, [self.king, self.queen])
+        
+    def test_no_deal_when_cards_laid_and_hand_big_enough(self):
+        self.game.players[0].hand = [self.five, self.three2, self.ace, self.four]
+        self.game.turn = 0
+        self.game.deck.cards = [self.king, self.queen]
+        self.game.lay_cards([self.five])
+        correct_cards_in_hand = self.four in self.game.players[0].hand and \
+                                self.three2 in self.game.players[0].hand and \
+                                self.ace in self.game.players[0].hand
+        self.assertTrue(correct_cards_in_hand)
+        self.assertEqual(len(self.game.players[0].hand), 3)
+        self.assertEqual(self.game.pile, [self.five])
+        self.assertEqual(self.game.deck.cards, [self.king, self.queen])
+
+    def test_deal_correct_amount_to_make_correct_hand_size(self):
+        self.game.players[0].hand = [self.five]
+        self.game.turn = 0
+        self.game.deck.cards = [self.king, self.queen, self.ace, self.three1, self.nine]
+        self.game.lay_cards([self.five])
+        correct_cards_in_hand = self.nine in self.game.players[0].hand and \
+                                self.three1 in self.game.players[0].hand and \
+                                self.ace in self.game.players[0].hand
+        self.assertTrue(correct_cards_in_hand)
+        self.assertEqual(len(self.game.players[0].hand), 3)
+        self.assertEqual(self.game.pile, [self.five])
+        self.assertEqual(self.game.deck.cards, [self.king, self.queen])
+
+
     def test_first_current_player(self):
         player = self.game.current_player()
         self.assertEquals(player.name, "James")
@@ -301,5 +359,13 @@ class TestGame(unittest.TestCase):
         self.game.players[0].hand = [self.five, self.nine, self.three1, self.eight]
         self.game.pile = [self.ace, self.two, self.three4, self.three2, self.three3]
         self.game.lay_cards([self.eight])
-        self.assertEquals(self.game.turn, 0)
+        self.assertEqual(self.game.turn, 0)
+        
+    def test_lay_from_face_up(self):
+        self.game.turn = 0
+        self.game.players[0].hand = []
+        self.game.players[0].faceup = [self.three1, self.ace, self.ten]
+        self.game.lay_cards([self.ace])
+        self.assertEqual(self.game.players[0].faceup, [self.three1, self.ten])
+        self.assertEqual(self.game.pile, [self.ace])
                 

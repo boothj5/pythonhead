@@ -16,10 +16,10 @@ class Player:
         self.hand.sort(key=sh_cmp)
         
     def has_hand(self):
-        return len(self.hand) > 0
+        return self.hand
         
     def has_faceup(self):
-        return len(self.faceup) > 0
+        return self.faceup
 
     def receive(self, cards):
         self.hand.extend(cards)

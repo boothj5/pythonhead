@@ -34,21 +34,36 @@ class Game:
             
     def lay_cards(self, cards):
         did_burn = False
-        self.pile.extend(cards)
         player = self.current_player()
-        player.hand = filter(lambda c : c not in cards, player.hand)
-        player.hand.extend(self.deck.pop_card(len(cards)))
-        player.hand.sort(key=sh_cmp)
+        if player.has_hand():
+            self.play_from_hand(cards)
+        elif player.has_faceup():
+            self.play_from_faceup(cards)
         self.last_move = player.name + " laid: " +  ", ".join(map(str, cards))
         if (self.laid_burn_card() or self.four_of_a_kind_on_pile()):
-            self.burnt.extend(self.pile)
-            self.pile = []
-            did_burn = True
-        if (not did_burn):
+            self.burn_pile()
+        else:
             self.next_turn()
             if (self.laid_miss_a_go_card()):
                 self.next_turn()
         
+    def burn_pile(self):
+        self.burnt.extend(self.pile)
+        self.pile = []
+
+    def play_from_hand(self, cards):
+        self.pile.extend(cards)
+        player = self.current_player()
+        player.hand = filter(lambda c : c not in cards, player.hand)
+        while len(player.hand) < self.num_cards and self.deck.cards:
+            player.receive(self.deck.pop_card())
+        player.hand.sort(key=sh_cmp)
+
+    def play_from_faceup(self, cards):
+        self.pile.extend(cards)
+        player = self.current_player()
+        player.faceup = filter(lambda c : c not in cards, player.faceup)
+
     def laid_burn_card(self):
         return (self.pile[-1].rank == Card.burn)
     
