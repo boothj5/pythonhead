@@ -17,8 +17,14 @@ class Deck:
         shuffle(self.cards)
 
     def pop_card(self, num=1):
-        cards = []
-        if len(self.cards) > 0:
-            for i in range(num):
-                cards.append(self.cards.pop())
-        return cards            
+        if not self.cards:
+            return []
+        else:
+            cards = []
+            if num >= len(self.cards):
+                cards.extend(self.cards)
+                self.cards = []
+            else:
+                for i in range(num):
+                    cards.append(self.cards.pop())
+            return cards            

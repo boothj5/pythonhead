@@ -133,8 +133,8 @@ class Game:
         elif card.rank in Card.lay_on_anything_ranks:
             return True
         else:
-            card_on_pile = pile[len(pile) -1]
-            rest_of_pile = pile[0:len(pile) -1]
+            card_on_pile = pile[-1]
+            rest_of_pile = pile[0:-1]
             if card_on_pile.rank == Card.invisible:
                 return Game.can_lay(card, rest_of_pile)
             elif card.rank >= card_on_pile.rank:

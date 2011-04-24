@@ -6,6 +6,19 @@ class TestDeck(unittest.TestCase):
 
     def setUp(self):
         self.deck = Deck(52)
+        self.two = Card(2, 1)
+        self.three = Card(3, 1)
+        self.four = Card(4, 1)
+        self.five = Card(5, 1)
+        self.six = Card(6, 1)
+        self.seven = Card(7, 1)
+        self.eight = Card(8, 1)
+        self.nine = Card(9, 1)
+        self.ten = Card(10, 1)
+        self.jack = Card(11, 1)
+        self.queen = Card(12, 1)
+        self.king = Card(13, 1)
+        self.ace = Card(14, 1)        
     
     def test_create_0_cards(self):
         deck = Deck(0)
@@ -58,6 +71,22 @@ class TestDeck(unittest.TestCase):
         result = deck.pop_card(5)
         self.assertEqual([], result)
 
+    def test_pop_two_from_deck_of_one_returns_one(self):
+        deck = Deck(0)
+        deck.cards.extend([self.nine])
+        result = deck.pop_card(2)
+        self.assertEqual([self.nine], result)
+        self.assertEqual(len(deck.cards), 0)
+
+    def test_pop_four_from_deck_of_two_returns_two(self):
+        deck = Deck(0)
+        deck.cards.extend([self.two, self.ace])
+        result = deck.pop_card(4)
+        result_contains_cards = self.two in result and self.ace in result
+        self.assertTrue(result_contains_cards)
+        self.assertEqual(len(deck.cards), 0)
+        self.assertEqual(len(result), 2)
+
     def test_pop_one_from_deck_returns_one(self):
         result = self.deck.pop_card(1)
         self.assertEqual([Card(14,4)], result)
@@ -77,7 +106,6 @@ class TestDeck(unittest.TestCase):
                 break
         self.assertEqual(remaining_length, 51)
         self.assertFalse(still_in_deck)
-
 
     def test_pop_three_from_deck(self):
         cards = self.deck.pop_card(3)
