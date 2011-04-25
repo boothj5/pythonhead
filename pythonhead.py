@@ -49,19 +49,20 @@ def first_move():
 
 def main_game():
     global game
-    if game.playing_from_face_down():
-        make_facedown_move()
-    else:
-        if game.can_play():
-            make_move()
+    while game.continue_game():
+        if game.playing_from_face_down():
+            make_facedown_move()
         else:
-            c.show_pickup(game.current_player())
-            c.wait_user()
-            game.pickup()
-            c.clear_screen()
-            c.show_game(game)
-            c.line()
-            main_game()
+            if game.can_play():
+                make_move()
+            else:
+                c.show_pickup(game.current_player())
+                c.wait_user()
+                game.pickup()
+                c.clear_screen()
+                c.show_game(game)
+                c.line()
+                main_game()
 
 def make_move():
     global game
@@ -92,9 +93,16 @@ def make_facedown_move():
     c.line()
     main_game()
         
+def end_game():
+    global game
+    pythonhead = game.get_pythonhead()
+    c.show_pythonhead(pythonhead)
+    c.wait_user()
+
 
 welcome()
 create_game()
 swap_cards()
 first_move()
 main_game()
+end_game()

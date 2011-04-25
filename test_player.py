@@ -140,3 +140,33 @@ class TestPlayer(unittest.TestCase):
                         len(self.james.faceup) == 4
         self.assertTrue(correctHand)
         self.assertTrue(correctFaceup)
+        
+    def test_player_has_cards_when_all_hands(self):
+        self.james.hand = [self.jack, self.nine, self.ace]
+        self.james.faceup = [self.eight, self.ten, self.four]
+        self.james.facedown = [self.seven, self.three, self.six]
+        self.assertTrue(self.james.has_cards())        
+
+    def test_player_not_has_cards_when_no_hands(self):
+        self.james.hand = []
+        self.james.faceup = []
+        self.james.facedown = []
+        self.assertFalse(self.james.has_cards())        
+
+    def test_player_has_cards_when_hand_only(self):
+        self.james.hand = [self.jack, self.nine, self.ace]
+        self.james.faceup = []
+        self.james.facedown = []
+        self.assertTrue(self.james.has_cards())        
+
+    def test_player_has_cards_when_faceup_only(self):
+        self.james.hand = []
+        self.james.faceup = [self.eight, self.ten, self.four]
+        self.james.facedown = []
+        self.assertTrue(self.james.has_cards())        
+
+    def test_player_has_cards_when_facedown_only(self):
+        self.james.hand = []
+        self.james.faceup = []
+        self.james.facedown = [self.seven, self.three, self.six]
+        self.assertTrue(self.james.has_cards())        

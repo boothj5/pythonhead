@@ -77,3 +77,7 @@ def show_pickup(player):
     
 def show_bad_facedown_choice(cards):
     print "Oh dear, you chose the " + str(cards[0])
+    
+def show_pythonhead(player):
+    print "GAME OVER!!"
+    print player.name + ", you are the PYTHONHEAD!!!!!!!!!11!!"

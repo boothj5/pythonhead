@@ -418,4 +418,39 @@ class TestGame(unittest.TestCase):
         self.game.players[0].faceup = [self.ace]
         self.game.players[0].facedown = [self.three1, self.ace, self.ten]
         self.assertFalse(self.game.playing_from_face_down())
+        
+    def test_continue_game_three_players(self):
+        new_game = Game(4,3,["James", "Mark", "Keith", "Steve"])
+        new_game.players[0].hand = [self.nine, self.ten]
+        new_game.players[1].faceup = [self.ace, self.seven]
+        new_game.players[2].facedown = [self.four, self.five]
+        self.assertTrue(new_game.continue_game())        
 
+    def test_continue_game_two_players(self):
+        new_game = Game(4,3,["James", "Mark", "Keith", "Steve"])
+        new_game.players[0].hand = [self.nine, self.ten]
+        new_game.players[1].faceup = [self.ace, self.seven]
+        self.assertTrue(new_game.continue_game())        
+
+    def test_not_continue_game_one_player(self):
+        new_game = Game(4,3,["James", "Mark", "Keith", "Steve"])
+        new_game.players[0].hand = [self.nine, self.ten]
+        self.assertFalse(new_game.continue_game())
+        
+    def test_get_pythonhead_when_first(self):
+        new_game = Game(4,3,["James", "Mark", "Keith", "Steve"])
+        new_game.players[0].hand = [self.nine, self.ten]
+        pythonhead = new_game.get_pythonhead()
+        self.assertEqual(pythonhead, new_game.players[0])        
+        
+    def test_get_pythonhead_when_second(self):
+        new_game = Game(4,3,["James", "Mark", "Keith", "Steve"])
+        new_game.players[1].hand = [self.nine, self.ten]
+        pythonhead = new_game.get_pythonhead()
+        self.assertEqual(pythonhead, new_game.players[1])        
+
+    def test_get_pythonhead_when_third(self):
+        new_game = Game(4,3,["James", "Mark", "Keith", "Steve"])
+        new_game.players[2].hand = [self.nine, self.ten]
+        pythonhead = new_game.get_pythonhead()
+        self.assertEqual(pythonhead, new_game.players[2])        

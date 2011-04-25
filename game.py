@@ -163,6 +163,21 @@ class Game:
         player = self.current_player()
         result = not player.has_hand() and not player.has_faceup() and player.has_facedown()
         return result
+    
+    def continue_game(self):
+        players_with_cards = 0
+        for player in self.players:
+            if player.has_cards():
+                players_with_cards = players_with_cards + 1
+        if players_with_cards >= 2:
+            return True
+        else:
+            return False
+
+    def get_pythonhead(self):
+        for player in self.players:
+            if player.has_cards():
+                return player
 
     @staticmethod
     def same_rank(cards):
