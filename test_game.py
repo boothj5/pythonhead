@@ -272,6 +272,11 @@ class TestGame(unittest.TestCase):
         self.game.players[0].faceup = [self.nine, self.ten, self.three1]
         self.assertEquals([self.nine, self.three1], self.game.get_cards([0,2]))
 
+    def test_get_cards_from_facedown(self):
+        self.game.players[0].hand = []
+        self.game.players[0].faceup = []
+        self.game.players[0].facedown = [self.nine, self.ten, self.three1]
+        self.assertEquals([self.ten], self.game.get_cards([1]))
 
     def test_get_cards_correct_player(self):
         self.game.players[0].hand = [self.nine, self.ten, self.three1]
@@ -300,6 +305,21 @@ class TestGame(unittest.TestCase):
         self.assertEquals(self.game.last_move, "James picked up 3 cards.")
         self.assertEquals(self.game.turn, 1)
         
+    def test_pickup_with_facedown_card(self):
+        self.game.players[0].hand = []
+        self.game.players[0].facedown = [self.seven, self.four, self.eight]
+        self.game.pile = [self.ace, self.king, self.queen]
+        self.game.pickup_with_facedown_card([self.four])
+        cards_picked_up = self.ace in self.game.players[0].hand and \
+                          self.king in self.game.players[0].hand and \
+                          self.queen in self.game.players[0].hand and \
+                          self.four in self.game.players[0].hand
+        self.assertTrue(cards_picked_up)
+        self.assertEquals(self.game.pile, [])
+        self.assertEquals(self.game.last_move, "James picked up 4 cards.")
+        self.assertEquals(self.game.turn, 1)
+
+
     def test_same_rank_returns_true(self):
         self.assertTrue(Game.same_rank([self.three1, self.three2, self.three3]))
         
@@ -368,4 +388,34 @@ class TestGame(unittest.TestCase):
         self.game.lay_cards([self.ace])
         self.assertEqual(self.game.players[0].faceup, [self.three1, self.ten])
         self.assertEqual(self.game.pile, [self.ace])
-                
+        
+    def test_lay_from_face_down(self):
+        self.game.turn = 0
+        self.game.players[0].hand = []
+        self.game.players[0].faveup = []
+        self.game.players[0].facedown = [self.three1, self.ace, self.ten]
+        self.game.lay_cards([self.ace])
+        self.assertEqual(self.game.players[0].facedown, [self.three1, self.ten])
+        self.assertEqual(self.game.pile, [self.ace])
+
+    def test_playing_from_face_down(self):
+        self.game.turn = 0
+        self.game.players[0].hand = []
+        self.game.players[0].faceup = []
+        self.game.players[0].facedown = [self.three1, self.ace, self.ten]
+        self.assertTrue(self.game.playing_from_face_down())
+    
+    def test_not_playing_from_face_down_when_hand(self):
+        self.game.turn = 0
+        self.game.players[0].hand = [self.ace]
+        self.game.players[0].faceup = []
+        self.game.players[0].facedown = [self.three1, self.ace, self.ten]
+        self.assertFalse(self.game.playing_from_face_down())
+
+    def test_not_playing_from_face_down_when_faceup(self):
+        self.game.turn = 0
+        self.game.players[0].hand = []
+        self.game.players[0].faceup = [self.ace]
+        self.game.players[0].facedown = [self.three1, self.ace, self.ten]
+        self.assertFalse(self.game.playing_from_face_down())
+

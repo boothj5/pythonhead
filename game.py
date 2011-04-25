@@ -39,6 +39,8 @@ class Game:
             self.play_from_hand(cards)
         elif player.has_faceup():
             self.play_from_faceup(cards)
+        else:
+            self.play_from_facedown(cards)
         self.last_move = player.name + " laid: " +  ", ".join(map(str, cards))
         if (self.laid_burn_card() or self.four_of_a_kind_on_pile()):
             self.burn_pile()
@@ -63,6 +65,11 @@ class Game:
         self.pile.extend(cards)
         player = self.current_player()
         player.faceup = filter(lambda c : c not in cards, player.faceup)
+
+    def play_from_facedown(self, cards):
+        self.pile.extend(cards)
+        player = self.current_player()
+        player.facedown = filter(lambda c : c not in cards, player.facedown)
 
     def laid_burn_card(self):
         return (self.pile[-1].rank == Card.burn)
@@ -90,6 +97,8 @@ class Game:
             return self.can_play_from_hand()
         elif player.has_faceup():
             return self.can_play_from_faceup()
+        elif player.has_facedown():
+            return True
         else:
             return False
         
@@ -118,8 +127,11 @@ class Game:
         player = self.current_player()
         if player.has_hand():
             return map(lambda i : player.hand[i], card_indexes)
-        else:
+        elif player.has_faceup():
             return map(lambda i : player.faceup[i], card_indexes)
+        else:
+            return map(lambda i : player.facedown[i], card_indexes)
+            
 
     def lowest_cards(self):
         player = self.current_player()
@@ -135,7 +147,22 @@ class Game:
         player.hand.sort(key=sh_cmp)
         self.last_move = player.name + " picked up " + str(len(self.pile)) + " cards."
         self.pile = []
-        self.next_turn()        
+        self.next_turn()
+    
+    def pickup_with_facedown_card(self, card):
+        player = self.current_player()
+        player.receive(self.pile)
+        player.receive(card)
+        player.facedown = filter(lambda c : c not in card, player.facedown)
+        player.hand.sort(key=sh_cmp)
+        self.last_move = player.name + " picked up " + str(len(self.pile) + 1) + " cards."
+        self.pile = []
+        self.next_turn()
+        
+    def playing_from_face_down(self):
+        player = self.current_player()
+        result = not player.has_hand() and not player.has_faceup() and player.has_facedown()
+        return result
 
     @staticmethod
     def same_rank(cards):

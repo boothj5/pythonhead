@@ -21,5 +21,8 @@ class Player:
     def has_faceup(self):
         return self.faceup
 
+    def has_facedown(self):
+        return self.facedown
+
     def receive(self, cards):
         self.hand.extend(cards)

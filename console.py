@@ -62,7 +62,10 @@ def request_faceup_swap():
 def request_move(player):
     cs = map(int, raw_input(player.name + " which cards do you wish to lay? ").split(','))
     return map(lambda c : c - 1, cs)
-    
+
+def request_from_face_down(player):
+    return (int(raw_input(player.name + ", choose a card from your face down pile:"))) - 1
+
 def bad_move(cards):
     print "You cannot lay the " + ", ".join(map(str, cards))
     
@@ -71,3 +74,6 @@ def good_move(cards):
 
 def show_pickup(player):
     print "Oh dear " + player.name + " you have to pick up."
+    
+def show_bad_facedown_choice(cards):
+    print "Oh dear, you chose the " + str(cards[0])
