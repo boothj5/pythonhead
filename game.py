@@ -56,7 +56,7 @@ class Game:
     def play_from_hand(self, cards):
         self.pile.extend(cards)
         player = self.current_player()
-        player.hand = filter(lambda c : c not in cards, player.hand)
+        player.hand = Game.remove_cards(cards, player.hand)
         while len(player.hand) < self.num_cards and self.deck.cards:
             player.receive(self.deck.pop_card())
         player.hand.sort(key=sh_cmp)
@@ -64,12 +64,12 @@ class Game:
     def play_from_faceup(self, cards):
         self.pile.extend(cards)
         player = self.current_player()
-        player.faceup = filter(lambda c : c not in cards, player.faceup)
+        player.faceup = Game.remove_cards(cards, player.faceup)
 
     def play_from_facedown(self, cards):
         self.pile.extend(cards)
         player = self.current_player()
-        player.facedown = filter(lambda c : c not in cards, player.facedown)
+        player.facedown = Game.remove_cards(cards, player.facedown)
 
     def laid_burn_card(self):
         return (self.pile[-1].rank == Card.burn)
@@ -86,10 +86,8 @@ class Game:
     def valid_move(self, cards):
         if not Game.same_rank(cards):
             return False
-        elif Game.can_lay(cards[0], self.pile):
-            return True
         else:
-            return False
+            return Game.can_lay(cards[0], self.pile)
 
     def can_play(self):
         player = self.current_player()
@@ -97,18 +95,19 @@ class Game:
             return self.can_play_from_hand()
         elif player.has_faceup():
             return self.can_play_from_faceup()
-        elif player.has_facedown():
-            return True
         else:
-            return False
+            return player.has_facedown()
         
     def can_play_from_hand(self):
         player = self.current_player()
-        return any(map(lambda c : Game.can_lay(c, self.pile), player.hand))
+        return self.can_lay_any_of(player.hand)
         
     def can_play_from_faceup(self):
         player = self.current_player()
-        return any(map(lambda c : Game.can_lay(c, self.pile), player.faceup))
+        return self.can_lay_any_of(player.faceup)
+
+    def can_lay_any_of(self, cards):
+        return any(map(lambda c : Game.can_lay(c, self.pile), cards))
 
     def next_turn(self):
         self.turn = self.turn + 1
@@ -126,12 +125,14 @@ class Game:
     def get_cards(self, card_indexes):
         player = self.current_player()
         if player.has_hand():
-            return map(lambda i : player.hand[i], card_indexes)
+            return self.get_from_indexes(card_indexes, player.hand)
         elif player.has_faceup():
-            return map(lambda i : player.faceup[i], card_indexes)
+            return self.get_from_indexes(card_indexes, player.faceup)
         else:
-            return map(lambda i : player.facedown[i], card_indexes)
-            
+            return self.get_from_indexes(card_indexes, player.facedown)
+
+    def get_from_indexes(self, indexes, cards):
+        return map(lambda i : cards[i], indexes)
 
     def lowest_cards(self):
         player = self.current_player()
@@ -153,7 +154,7 @@ class Game:
         player = self.current_player()
         player.receive(self.pile)
         player.receive(card)
-        player.facedown = filter(lambda c : c not in card, player.facedown)
+        player.facedown = Game.remove_cards(card, player.facedown)
         player.hand.sort(key=sh_cmp)
         self.last_move = player.name + " picked up " + str(len(self.pile) + 1) + " cards."
         self.pile = []
@@ -169,10 +170,7 @@ class Game:
         for player in self.players:
             if player.has_cards():
                 players_with_cards = players_with_cards + 1
-        if players_with_cards >= 2:
-            return True
-        else:
-            return False
+        return players_with_cards >= 2
 
     def get_pythonhead(self):
         for player in self.players:
@@ -194,7 +192,9 @@ class Game:
             rest_of_pile = pile[0:-1]
             if card_on_pile.rank == Card.invisible:
                 return Game.can_lay(card, rest_of_pile)
-            elif card.rank >= card_on_pile.rank:
-                return True
             else:
-                return False
+                return card.rank >= card_on_pile.rank
+
+    @staticmethod
+    def remove_cards(cards_to_remove, cards):
+        return filter(lambda c : c not in cards_to_remove, cards)

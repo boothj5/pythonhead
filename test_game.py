@@ -194,7 +194,7 @@ class TestGame(unittest.TestCase):
         
     def test_can_lay_five_on_four(self):
         self.game.pile.append(self.four)
-        self.assertTrue(self.game.valid_move([self.four]))
+        self.assertTrue(self.game.valid_move([self.five]))
 
     def test_can_lay_two_on_three(self):
         self.game.pile.append(self.three1)

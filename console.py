@@ -14,7 +14,7 @@ def show_game(game):
         print player.name
         print "Hand      : " + ", ".join(map(str, player.hand))
         print "Face up   : " + ", ".join(map(str, player.faceup))
-        print "Face down : " + ", ".join(map(str, player.facedown))
+        print "Face down : " + ", ".join(map(lambda c : "****", player.facedown))
         print
     print game.last_move
 

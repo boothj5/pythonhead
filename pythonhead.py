@@ -36,13 +36,10 @@ def swap_cards():
             c.clear_screen()
             c.show_player_swap(player)
             swap = c.request_swap_more()
-    c.clear_screen()
-    c.show_game(game)
 
 def first_move():
     global game
     game.first_move()
-    c.wait_user()
     c.clear_screen()
     c.show_game(game)
     c.line()
@@ -59,10 +56,14 @@ def main_game():
                 c.show_pickup(game.current_player())
                 c.wait_user()
                 game.pickup()
-                c.clear_screen()
-                c.show_game(game)
-                c.line()
-                main_game()
+                continue_main_game()
+
+def continue_main_game():
+    global game
+    c.clear_screen()
+    c.show_game(game)
+    c.line()
+    main_game()
 
 def make_move():
     global game
@@ -73,10 +74,7 @@ def make_move():
         make_move()
     else:
         game.lay_cards(cards)
-        c.clear_screen()
-        c.show_game(game)
-        c.line()
-        main_game()
+        continue_main_game()
 
 def make_facedown_move():
     global game
@@ -88,10 +86,7 @@ def make_facedown_move():
         game.pickup_with_facedown_card(cards)
     else:
         game.lay_cards(cards)
-    c.clear_screen()
-    c.show_game(game)
-    c.line()
-    main_game()
+    continue_main_game()
         
 def end_game():
     global game
