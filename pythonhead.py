@@ -96,10 +96,13 @@ def end_game():
     c.show_pythonhead(pythonhead)
     c.wait_user()
 
+def main():
+    welcome()
+    create_game()
+    swap_cards()
+    first_move()
+    main_game()
+    end_game()
 
-welcome()
-create_game()
-swap_cards()
-first_move()
-main_game()
-end_game()
+if __name__ == "__main__":
+    main()
