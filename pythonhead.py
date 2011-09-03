@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from game import Game
 import console as c
 
